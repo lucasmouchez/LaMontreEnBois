@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Montre</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      background: white;
+    }
+    header img {
+      height: 40px;
+    }
+    .main-image {
+      width: 100%;
+      max-height: 300px;
+      object-fit: contain; /* Affiche toute l'image sans la couper */
+      display: block;
+      margin: 0 auto;
+      background: #fff; /* Fond blanc si image a transparence */
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+    }
+    .main-image:hover {
+      transform: scale(1.05);
+    }
+    .slider {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+      overflow-x: auto;
+      padding: 0 10px;
+    }
+    .slider img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      cursor: pointer;
+      flex-shrink: 0;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      transition: border-color 0.3s ease;
+    }
+    .slider img.selected {
+      border-color: orange;
+    }
+    .content {
+      text-align: center;
+      padding: 20px;
+    }
+    .content h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .price {
+      font-size: 24px;
+      color: red;
+      font-weight: bold;
+    }
+    .old-price {
+      text-decoration: line-through;
+      color: gray;
+      font-size: 18px;
+      margin-left: 10px;
+    }
+    .discount {
+      background: orange;
+      color: white;
+      padding: 10px;
+      display: inline-block;
+      margin: 10px 0;
+    }
+    .option-group {
+      margin: 20px 0;
+    }
+    .color-btn {
+      padding: 10px 20px;
+      border: 2px solid #000;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .color-btn:hover {
+      background-color: #ddd;
+    }
+    .quantity {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .quantity button {
+      width: 30px;
+      height: 30px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .ajouter-btn {
+      margin-top: 20px;
+      background: green;
+      color: white;
+      border: none;
+      padding: 15px 50px;
+      font-size: 20px;
+      border-radius: 15px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .ajouter-btn:hover {
+      background-color: #0b770b;
+    }
+
+    /* Adaptation mobile */
+    @media (max-width: 480px) {
+      .main-image {
+        max-height: 200px;
+      }
+      .slider img {
+        width: 80px;
+        height: 80px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Bandeau du haut -->
+  <header>
+    <img src="logo.png" alt="logo" />
+    <img src="menu.png" alt="menu" />
+    <img src="shop.png" alt="shop" />
+  </header>
+
+  <!-- Image principale -->
+  <img src="montre.png" alt="Montre principale" class="main-image" id="mainImage" />
+
+  <!-- Miniatures slider -->
+  <div class="slider" id="slider">
+    <img src="montre1.png" alt="Montre 1" class="selected" />
+    <img src="montre2.png" alt="Montre 2" />
+    <img src="montre3.png" alt="Montre 3" />
+    <img src="montre4.png" alt="Montre 4" />
+  </div>
+
+  <!-- Contenu -->
+  <div class="content">
+    <h2>MONTRE EN BLANC OUTMÉTIQUE</h2>
+    <div>
+      <span class="price">49,99€</span>
+      <span class="old-price">99,99€</span>
+    </div>
+    <div class="discount">ÉCONOMISEZ avec le code ( REDESCENDS GAËTAN )</div>
+
+    <div class="option-group">
+      <p>Couleur</p>
+      <button class="color-btn">Gris Sidéral</button>
+      <button class="color-btn" style="opacity: 0.5;">Dark Saul</button>
+    </div>
+
+    <div class="option-group">
+      <p>Quantité</p>
+      <div class="quantity">
+        <button onclick="updateQuantity(-1)">-</button>
+        <span id="qty">1</span>
+        <button onclick="updateQuantity(1)">+</button>
+      </div>
+    </div>
+
+    <button class="ajouter-btn" onclick="window.location.href='mobils2.html'">AJOUTER</button>
+  </div>
+
+  <script>
+    let quantity = 1;
+
+    function updateQuantity(change) {
+      quantity += change;
+      if (quantity < 1) quantity = 1;
+      document.getElementById('qty').textContent = quantity;
+    }
+
+    // Changement de l'image principale au clic sur une miniature
+    const slider = document.getElementById('slider');
+    const mainImage = document.getElementById('mainImage');
+    const thumbnails = slider.querySelectorAll('img');
+
+    thumbnails.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        // Mettre à jour l'image principale
+        mainImage.src = thumb.src;
+        mainImage.alt = thumb.alt;
+
+        // Enlever la sélection de toutes les miniatures
+        thumbnails.forEach(t => t.classList.remove('selected'));
+
+        // Ajouter la sélection à la miniature cliquée
+        thumb.classList.add('selected');
+      });
+    });
+
+    // Initialisation : l'image principale correspond à la miniature sélectionnée au départ
+    // Ici, on prend la 1ère miniature comme sélectionnée
+    if (thumbnails.length > 0) {
+      mainImage.src = thumbnails[0].src;
+      mainImage.alt = thumbnails[0].alt;
+    }
+  </script>
+</body>
+</html>
